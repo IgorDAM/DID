@@ -26,3 +26,6 @@ node_modules/
 # Añade otras reglas necesarias abajo, p. ej.:
 # /build/
 # *.bak
+
+# Ignorar el fichero 04-soluciones.md localmente (no subir)
+04-soluciones.md
