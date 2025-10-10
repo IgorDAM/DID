@@ -1,0 +1,10 @@
+export const Ana = "Ana";
+export const Luis = "Luis";
+export const Marta = "Marta";
+export const Pedro = "Pedro";
+export const Juan = "Juan";
+export const Lucia = "Lucia";
+export const Carlos = "Carlos";
+export const Elena = "Elena";
+export const Sofia = "Sofia";
+export const Alberto = "Alberto";
