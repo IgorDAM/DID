@@ -9,7 +9,7 @@
 async function getUppercaseTitlesByUser(userId = 1) {
     // 1) fetch posts
     const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-    console.log(response);
+  
     // 2) json
     const posts = await response.json(); 
     // 3) filter por userId
@@ -19,7 +19,7 @@ async function getUppercaseTitlesByUser(userId = 1) {
     console.log(tituloMayusculas);
 }
 
-getUppercaseTitlesByUser()
+getUppercaseTitlesByUser().then(titles => console.log(titles));
 ```
 ### Usé fetch para obtener posts.
 ### Filtré por userId.
@@ -34,20 +34,19 @@ getUppercaseTitlesByUser()
 ``` js
 async function totalElectronics() {
   // GET https://fakestoreapi.com/products
-    const response = await fetch('https://fakestoreapi.com/products'); 
-    console.log(response);
-    const productos = await response.json(); 
-    console.log(productos);
+  const response = await fetch('https://fakestoreapi.com/products'); 
+  const productos = await response.json(); 
    
   // filter por category === 'electronics'
-    const electronica = productos.filter(producto => producto.category === 'electronics');
-    console.log(electronica);
-
-  // reduce sumando price
-    const total = electronica.reduce((acc, producto) => acc + producto.price, 0);
+  const electronica = productos.filter(producto => producto.category === 'electronics');
+ 
+ // reduce sumando price
+  const total = electronica.reduce((acc, producto) => acc + producto.price, 0);
+  console.log(total); 
+  return total;
 }
-totalElectronics() 
-console.log(total); 
+totalElectronics().then(total => console.log("Total: ", total))
+
 ```
 ### Obtuve productos de FakeStoreAPI.
 ### Filtré por categoría 'electronics'.
@@ -63,26 +62,25 @@ descendentemente por `postsCount`.
 ``` js
 async function usersWithPostCount() {
   // Promise.all([fetch users, fetch posts])
-    const [usersResponse, postsResponse] = await Promise.all([
-        fetch('https://jsonplaceholder.typicode.com/users'),
-        fetch('https://jsonplaceholder.typicode.com/posts')
-    ]); 
+  const [usersResponse, postsResponse] = await Promise.all([
+      fetch('https://jsonplaceholder.typicode.com/users'),
+      fetch('https://jsonplaceholder.typicode.com/posts')
+  ]); 
 
-    const users = await usersResponse.json(); 
-    const posts = await postsResponse.json();
+  const users = await usersResponse.json(); 
+  const posts = await postsResponse.json();
 
   // Para cada usuario, cuenta cuántos posts tiene
-    const usersWithCount = users.map(user => {
-        const postsCount = posts.filter(post => post.userId === user.id).length;
+  const usersWithCount = users.map(user => {
+  const postsCount = posts.filter(post => post.userId === user.id).length;
         
  // Devuelve [{ userName, postsCount }] ordenado por postsCount desc
-        return { userName: user.name, postsCount };}).sort((a, b) => b.postsCount - a.postsCount);
-   
-     return usersWithCount;
-   
-   usersWithPostCount() 
-         console.log(usersWithCount);
-}
+  return { userName: user.name, postsCount };}).sort((a, b) => b.postsCount - a.postsCount);
+  console.log(usersWithCount);
+  return usersWithCount;
+  }
+
+  usersWithPostCount().then(console.log) 
 ```
 ### Usé Promise.all para hacer dos fetch en paralelo.
 ### Conté los posts por usuario.
@@ -97,28 +95,23 @@ y ordénalos por `postId` asc y después por `email` asc.
 
 ``` js
 async function cleanComments() {
-    // GET /comments
-    const response = await fetch('https://jsonplaceholder.typicode.com/comments'); 
+  // GET /comments
+  const response = await fetch('https://jsonplaceholder.typicode.com/comments'); 
   
-    // filter body includes 'qui' (case-insensitive)
-    const comments = await response.json();
-    const filtrados = comments.filter(comment => comment.body.toLowerCase().includes('qui'));
+  // filter body includes 'qui' (case-insensitive)
+  const comments = await response.json();
+  const filtrados = comments.filter(comment => comment.body.toLowerCase().includes('qui'));
+  // map: email a minúsculas
+  const emailsMinusculas = filtrados.map((f) => ({...f, email: f.email.toLowerCase()}));
     
-
-    // map: email a minúsculas
-    const emailsMinusculas = filtrados.map((f) => ({...f, email: f.email.toLowerCase()}));
-    
-  
-    // sort por postId, luego email
-    const ordenados = emailsMinusculas.sort((a, b) => a.postId - b.postId || a.email.localeCompare(b.email));
-   
-
-    return ordenados;
-
-    cleanComments() 
-    console.log(ordenados);
+  // sort por postId, luego email
+  const ordenados = emailsMinusculas.sort((a, b) => a.postId - b.postId || a.email.localeCompare(b.email));
+  console.log(ordenados);
+  return ordenados;
+ 
 
 }
+cleanComments().then(console.log)
 ```
 ### Obtuve comments de JSONPlaceholder.
 ### Filtré los que contienen 'qui' en el body (case-insensitive).
