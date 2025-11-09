@@ -1,7 +1,5 @@
-import { useState } from 'react';
-
-const initialStudents = [
-  {
+export const db = [
+    {
     id: "1",
     name: "Ana García López",
     email: "ana.garcia@escuela.com",
@@ -73,4 +71,4 @@ const initialStudents = [
       { date: "2025-01-18", status: "present" },
     ]
   }
-];
+]
